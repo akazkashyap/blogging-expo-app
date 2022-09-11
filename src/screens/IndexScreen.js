@@ -7,11 +7,14 @@ const IndexScreen = ({ navigation }) => {
     const { data } = useContext(BlogContext)
 
     return <>
+        {!data.length ? <Text style={styles.noBlogText}>Nothing to show</Text> : null}
         <FlatList
             data={data}
             keyExtractor={post => post.id}
             renderItem={({ item }) => {
+
                 return (
+
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate("Blog", {
@@ -60,6 +63,12 @@ const styles = StyleSheet.create({
     },
     descriptionStyle: {
         fontSize: 15
+    },
+    noBlogText: {
+        flex: 1,
+        textAlign: "center",
+        textAlignVertical: "center",
+        fontSize: 20
     }
 })
 
