@@ -2,6 +2,7 @@
   "expo": {
     "name": "blog",
     "slug": "blog",
+    "owner": "akazkashyap",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "blog.akaz"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8a4d9f19-3c17-490b-9771-ef24d5eaaf1b"
+      }
     }
   }
 }

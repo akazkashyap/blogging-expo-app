@@ -1,15 +1,17 @@
 import React, { useContext } from "react";
 import { View, Text, Button, StyleSheet } from "react-native"
-import { withNavigation } from "react-navigation";
 
-import BlogContext from "../context/BlogContext";
+import { Context } from "../context/BlogContext";
 
 const BlogPost = ({ navigation }) => {
-    const { data, blogAction } = useContext(BlogContext)
+    const { state, deleteBlog } = useContext(Context)
 
-    const title = navigation.getParam("title")
-    const description = navigation.getParam("description")
     const id = navigation.getParam("id")
+    const blog = state.find(element => element.id == id) || {}
+
+    const title = blog.title
+    const description = blog.description
+
     return <>
         <View
             style={styles.viewStyle}
@@ -22,20 +24,16 @@ const BlogPost = ({ navigation }) => {
             <View style={styles.btn1}>
                 <Button
                     title="Delete"
-                    onPress={() => {
-                        blogAction("deleteBlog", title, description, id)
-                        navigation.navigate("Index")
-                    }}
+                    onPress={() =>
+                        deleteBlog(id, () => navigation.navigate("Index"))
+                    }
                     color={"#A60963"}
                 />
             </View>
             <View style={styles.btn2}>
                 <Button
                     title="Edit"
-                    onPress={() => {
-                        //blogAction("editBlog", title, description, id)
-                        navigation.navigate("AddBlog", { title, description, id })
-                    }}
+                    onPress={() => navigation.navigate("EditBlog", { id })}
                 />
             </View>
         </View>
@@ -75,4 +73,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default withNavigation(BlogPost);
+export default BlogPost;

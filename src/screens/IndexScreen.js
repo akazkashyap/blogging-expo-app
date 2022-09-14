@@ -1,25 +1,21 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 
-import BlogContext from "../context/BlogContext"
+import { Context } from "../context/BlogContext"
 
 const IndexScreen = ({ navigation }) => {
-    const { data } = useContext(BlogContext)
-
+    const { state } = useContext(Context)
+    console.log(state)
     return <>
-        {!data.length ? <Text style={styles.noBlogText}>Nothing to show</Text> : null}
+        {!state.length ? <Text style={styles.noBlogText}>Nothing to show</Text> : null}
         <FlatList
-            data={data}
+            data={state}
             keyExtractor={post => post.id}
             renderItem={({ item }) => {
-
                 return (
-
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate("Blog", {
-                                title: item.title,
-                                description: item.description,
                                 id: item.id
                             })
                         }}>

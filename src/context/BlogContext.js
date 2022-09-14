@@ -1,36 +1,49 @@
-import React, { useReducer } from "react";
-
-
-const BlogContext = React.createContext()
+import createDataContext from "./createDataContext";
 
 const blogReducer = (state, action) => {
     switch (action.type) {
         case "addBlog":
             return [...state, { title: action.title, description: action.description, id: action.id }]
+
         case "editBlog":
-            return [state.filter((blog) => { blog.id != action.id })]
+            const updatedItem = {
+                title: action.title,
+                description: action.description,
+                id: action.id
+            }
+            return state.map((element) => element.id === action.id ? updatedItem : element)
+
         case "deleteBlog":
-            return state.filter((blog) => blog.id != action.id)
+            return state.filter((item) => item.id !== action.id)
+
         default:
-            return "Something went wrong!"
+            return state
     }
 }
 
-export const BlogProvider = ({ children }) => {
-
-    const [blogPost, dispatch] = useReducer(blogReducer, [])
-
-    const blogAction = (type, title, description, id) => {
-
-        dispatch({ type, title, description, id })
+const addBlog = (dispatch) => {
+    return (title, description, id, callback) => {
+        dispatch({ type: "addBlog", title, description, id })
+        callback()
     }
-
-    return <BlogContext.Provider
-        //These values can be used in any child component but using useContext
-        value={{ data: blogPost, blogAction }}
-    >
-        {children}
-    </BlogContext.Provider>
 }
 
-export default BlogContext;
+const deleteBlog = (dispatch) => {
+    return (id, callback) => {
+        dispatch({ type: "deleteBlog", id })
+        callback()
+    }
+}
+
+const editBlog = (dispatch) => {
+    return (title, description, id, callback) => {
+        dispatch({ type: "editBlog", title, description, id })
+        callback()
+    }
+}
+
+export const { Context, Provider } = createDataContext(
+    blogReducer,
+    { addBlog, editBlog, deleteBlog },
+    []
+)
